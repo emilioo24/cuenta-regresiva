@@ -7,14 +7,15 @@
     <style>
         body {
             font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+        }
+        .countdown-container {
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            background-color: #f0f0f0;
-            margin: 0;
-        }
-        .countdown-container {
+            height: 40vh;
             text-align: center;
         }
         .countdown {
@@ -23,13 +24,108 @@
         .hidden {
             display: none;
         }
+        .cuadros {
+            font-size: 50px;
+            margin-left: 40px;
+            margin-right: 40px;
+            margin-bottom: 5px;
+            margin-top: 10px;
+        }
+        .antes {
+            background-color: aliceblue;
+            color: rgb(49, 176, 255);
+            border: 1px solid white;
+            margin: 10px;
+            padding-bottom: 5px;
+            border-radius: 7px;
+        }
+        .comments-container {
+            text-align: center;
+            margin-top: 20px;
+            width: 50%;
+        }
+        .comments-container textarea {
+            width: 100%;
+            height: 100px;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        .comments-container button {
+            padding: 10px 20px;
+            background-color: #333;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .comments-container .comment {
+            background-color: #fff;
+            padding: 10px;
+            margin-top: 10px;
+            border-radius: 5px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        }
+        textarea {
+            resize: none;
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 15px;
+        }
     </style>
 </head>
 <body>
+    <header>
+        <div>
+            <div style="text-align: center;">
+                <h1>Cuenta Regresiva</h1>
+                <h1>Campeonato Argentino de Remo 2024</h1>
+            </div>
+            <div>
+                
+            </div>
+        </div>
+    </header>
     <div class="countdown-container">
-        <div id="countdown" class="countdown"></div>
+        <!--<div id="countdown" class="countdown"></div>-->
+        <div style="display: flex; justify-content: space-between;">
+            <div class="antes">
+                <div id="dias" class="cuadros"></div>
+                <br>
+                <span id="letraD"></span>
+            </div>
+            <div class="antes">
+                <div id="horas" class="cuadros"></div>
+                <br>
+                <span id="letraH"></span>
+            </div>
+            <div class="antes">
+                <div id="minutos" class="cuadros"></div>
+                <br>
+                <span id="letraM"></span>
+            </div>
+            <div class="antes">
+                <div id="segundos" class="cuadros"></div>
+                <br>
+                <span id="letraS"></span>
+            </div>
+        </div> 
         <img id="image" src="/imagen.jpg" alt="Imagen después de la cuenta regresiva" class="hidden">
     </div>
+
+    <div style="display: flex; justify-content: center;">
+        <div class="comments-container">
+            <textarea id="commentInput" placeholder="Deja un comentario..."></textarea>
+            <button onclick="addComment()">Enviar</button>
+            <div id="commentsList"></div>
+        </div>
+    </div>
+    
+    <footer style="margin-bottom: 0; margin-top: 80px; padding: 8px; display: flex; justify-content: center; background-color: #333;">
+        <div>
+            <span style="color: lightgray; font-size: 13px;">Creado por <a style="color: rgb(56, 171, 253); text-decoration: none;" target="_blank" href="https://instagram.com/emicalderon24">@emicalderon24</a></span>
+        </div>
+    </footer>
 
     <script>
         // Establecer la fecha hasta la cual vamos a contar
@@ -50,9 +146,53 @@
             var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
             var seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-            // Mostrar la cuenta regresiva en el elemento con id="countdown"
-            document.getElementById("countdown").innerHTML = days + "d " + hours + "h "
-            + minutes + "m " + seconds + "s ";
+            // En caso de ser menor que 10
+            if (days < 10) {
+                days = "0" + days
+            }
+            if (hours < 10) {
+                hours = "0" + hours
+            }
+            if (minutes < 10) {
+                minutes = "0" + minutes
+            }
+            if (seconds < 10) {
+                seconds = "0" + seconds
+            } 
+
+            // En caso de ser igual a 1
+            if (days != 1) {
+                letraD = "DÍAS"
+            } else {
+                letraD = "DÍA"
+            }
+            if (hours != 1) {
+                letraH = "HORAS"
+            } else {
+                letraH = "HORA"
+            }
+            if (minutes != 1) {
+                letraM = "MINUTOS"
+            } else {
+                letraM = "MINUTO"
+            }
+            if (seconds != 1) {
+                letraS = "SEGUNDOS"
+            } else {
+                letraS = "SEGUNDO"
+            }
+            
+            // Cuadros
+            document.getElementById("dias").innerHTML = days;
+            document.getElementById("horas").innerHTML = hours;
+            document.getElementById("minutos").innerHTML = minutes;
+            document.getElementById("segundos").innerHTML = seconds;
+
+            // Letras
+            document.getElementById("letraD").innerHTML = letraD;
+            document.getElementById("letraH").innerHTML = letraH;
+            document.getElementById("letraM").innerHTML = letraM;
+            document.getElementById("letraS").innerHTML = letraS;
 
             // Si la cuenta regresiva termina, mostrar la imagen
             if (distance < 0) {
@@ -61,6 +201,22 @@
                 document.getElementById("image").classList.remove("hidden");
             }
         }, 1000);
+
+        function addComment() {
+            var commentInput = document.getElementById("commentInput");
+            var commentsList = document.getElementById("commentsList");
+
+            var commentText = commentInput.value;
+            if (commentText.trim() === "") return;
+
+            var commentDiv = document.createElement("div");
+            commentDiv.className = "comment";
+            commentDiv.textContent = commentText;
+
+            commentsList.appendChild(commentDiv);
+
+            commentInput.value = "";
+        }
     </script>
 </body>
 </html>
