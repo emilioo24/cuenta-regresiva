@@ -72,6 +72,18 @@
             font-family: Arial, Helvetica, sans-serif;
             font-size: 15px;
         }
+        .antes-antes {
+            display: flex; 
+            justify-content: space-between;
+        }
+        @media screen and (max-width: 400px) {
+            .countdown-container {
+                display: block;
+            }
+            .antes-antes {
+                display: block;
+            }
+        }
     </style>
 </head>
 <body>
@@ -88,7 +100,7 @@
     </header>
     <div class="countdown-container">
         <!--<div id="countdown" class="countdown"></div>-->
-        <div style="display: flex; justify-content: space-between;">
+        <div class="antes-antes">
             <div class="antes">
                 <div id="dias" class="cuadros"></div>
                 <br>
